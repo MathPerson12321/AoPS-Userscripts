@@ -25,4 +25,6 @@ Note this is unethical and discouraged by AoPS, use this at your own risk.
 
 In development - An option to quote the previous post in the thread, get the post numbers of the posts it has sent, the ability to post in multiple threads (with all of them open).
 
+AI was used for the formatter function for ease of time.
+
 
