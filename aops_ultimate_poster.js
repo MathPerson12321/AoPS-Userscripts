@@ -4,79 +4,114 @@
 // @match       https://artofproblemsolving.com/*
 // @grant       none
 // @version     6.2.0
-// @author      epiccakeking
+// @author      MathPerson12321
 // @description Posts for you with a message of your choice in multiple threads.
 // @license     MIT
 // @icon        https://artofproblemsolving.com/online-favicon.ico?v=2
 // ==/UserScript==
 
-//Note this uses AoPS HTML, and you must be on the topic you want to automatically post in. Upgrades will come soon.
+//Upgrades will come soon.
 //Elements from this are inspired from AoPS Enhanced.
 //There is a 25 second cooldown, the default by AoPS, plus five to avoid lag.
 //A setting to quote the previous post and edit it will come soon.
 
+//Instructions in github
 
+(async function() {
+  'use strict';
 
-(function () {
-    'use strict';
+  //Constants - fill these out
+  const url = ""; //Url of the topic you want to post in
+  const userid = ""; //Your AoPS UserID
+  const sessionid = ""; //Session ID
+  const postIntervalSeconds = 30; //Recommended to keep it at 30 seconds, it must be a minimum of 25
+
+  const id = getTopicId(url);
+  if (!id || !userid || !sessionid) {
+    console.error("Missing topic URL, user ID, or session ID.");
+    return;
+  }
+
+  //Counters
+  let counter = 0; //You can make counters to achieve a purpose, for example, this one tracks the amount of posts the bot does successfully.
+  let errors = 0; //Amount of time the bot fails to post.
+  let random = Math.floor(Math.random()*10)+1; //Random number from 1 to 10.
+  const maxposts = 100; //Bot will stop after sending 100 posts.
+  //You can make your own functions and/or counters.
+
+  let arrayofposts = []; //Array of all posts sent and their message content.
   
-    //Counters
-    let counter = 0; //You can make counters to achieve a purpose, for example, this one tracks the amount of posts the bot does successfully.
-    let errors = 0; //Amount of time the bot fails to post.
-    let random = Math.floor(Math.random()*10)+1; //Random number from 1 to 10.
-    //You can add your own and make them function, very basic knowledge of javascript needed for this.
+  //Timestamp
+  const timestamp = Date.now();
+  const dateobject = new Date(timestamp);
+  const date = dateobject.toDateString();
 
-    let arrayofposts = []; //Array of all posts sent and their message content.
+  let message = "Testing something out related to aops's community server."; //You can change this before running it, bbcode tags should be covered in strings.
+    
+  //This may get long so feel free to break it apart as shown below.
+  message += "\n Random integer: " + random; //Adds the random integer to the message content.
+  message += "\n [hide=Post number "+(counter+1)+"]";
+  message += "Sent by the bot at " + date + "[/hide]"; //Adds a hide tag with the amount of posts the bot has done after sending, with the time sent in the hide tag.
+  //Note these are examples and you can manipulate these how you want, as long as they function.
+    
+  function sendData(){
+      //Data
+      const data = new URLSearchParams({
+        attachments: '[]',
+        post_text: message,
+        notify_email: '0',
+        topic_id: id,
+        allow_latex_errors: '0',
+        disable_bbcode: '0',
+        is_announcement: '0',
+        a: 'submit_post',
+        aops_logged_in: true,
+        aops_user_id: userid,
+        aops_session_id: sessionid
+    });
 
-    let message = "Message you want to send."; //You can change this before running it, bbcode tags work as above.
-    //This may get long so feel free to break it apart as shown below.
-    message += "\n" + "Random integer: " + random; //Adds the random integer to the message content.
-    message += "\n [hide=Post number "+(counter+1)+"]Done by the bot[/hide]"; //Adds a hide tag with the amount of posts the bot has done after sending.\
-    //Note these are examples and you can manipulate these how you want, as long as they function.
+    //Send the post with a fetch to the server
+    fetch('https://artofproblemsolving.com/m/community/ajax.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/javascript, */*; q=0.01',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Origin': 'https://artofproblemsolving.com',
+            'Referer': 'https://artofproblemsolving.com/community'
+        },
+        body: data.toString(),
+        credentials: "same-origin"
+    })
+        .then(res => res.json())
+        .then(json => {
+        console.log('Post Response:', json); //Confirmation
+        counter += 1; //Increasing counter - success
+        arrayofposts.unshift(message)
+    })
+        .catch(err => {
+        console.error('Post Error:', err);
+        errors += 1; //Error, increasing by 1
+    });
 
-    //BBcode stuff - these are used for a bit of variations to posts.
-    //"[quote]" and "[/quote]" are the tags for a quote. You can add "[quote=user]" where user is the person you quote.
-    //"[hide]" and "[/hide]" are used for hidden text. You can add "[hide=Something]" where something is the text shown in the hide box (which you click to show hidden text).
-    //These are examples, any of these work, as long as the bbcode is right. You can also add asymptote but be warned when using it.
+    checkMessagesSent();
+  }
 
-    const interval = 30000; //Milliseconds
-    const minPostLength = AoPS.Community.Constants.min_post_length; //This is eight characters
-  
-    //Check if you can post - on the right page
-    function canPost() {
-      return AoPS?.Community?.topicView?.replyBox &&
-             AoPS.Community.topicView.replyBox.el &&
-             AoPS.Community.topicView.replyBox.el.offsetParent !== null &&
-             AoPS.Community.topicView.replyBox.$el.is(":visible");
+  //Check if the amount of messages sent by the bot is less than the maximum
+  function checkMessagesSent(){
+    if(counter >= maxposts){
+      clearInterval(interval);
     }
-  
-    //Send messages
-    function postMessage() {
-      //Are you on the right page?
-      if(!canPost()){
-        console.warn("Cannot post: reply box not available.");
-        errors += 1;
-        return;
-      }
-  
-      const replyBox = AoPS.Community.topicView.replyBox;
-      const now = Date.now();
-  
-      if(!replyBox.model.get("isSending") && message.length >= minPostLength){ //Checking if the message will send
-        replyBox.setText(message);
-        replyBox.send();
-
-        console.log("[Bot] Posted at " + new Date().toLocaleTimeString());
-
-        counter += 1;
-        random = Math.floor(Math.random()*10)+1;
-        arrayofposts.unshift(message);
-      }else{
-        console.warn("[Bot] Skipped post. Maybe on cooldown or message too short.");
-        errors += 1;
-      }
+  }
+    
+  //Get topic ID
+  function getTopicId(url){
+    const match = url.match(/h(\d+)/);
+    if(!match[1]){
+      return null;
     }
-  
-    //Start interval posting
-    setInterval(postMessage, interval);
-  })();
+    return match[1];
+  }
+
+  const interval = setInterval(sendData,postIntervalSeconds*1000);
+})();
