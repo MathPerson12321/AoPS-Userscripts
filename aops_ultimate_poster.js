@@ -22,8 +22,6 @@
 
   //Constants - fill these out
   const url = ""; //Url of the topic you want to post in
-  const userid = ""; //Your AoPS UserID
-  const sessionid = ""; //Session ID
   const postIntervalSeconds = 30; //Recommended to keep it at 30 seconds, it must be a minimum of 25
 
   const id = getTopicId(url);
@@ -66,8 +64,8 @@
         is_announcement: '0',
         a: 'submit_post',
         aops_logged_in: true,
-        aops_user_id: userid,
-        aops_session_id: sessionid
+        aops_user_id: AoPS.session.user_id,
+        aops_session_id: AoPS.session.id
     });
 
     //Send the post with a fetch to the server
