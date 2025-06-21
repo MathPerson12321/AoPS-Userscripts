@@ -29,6 +29,8 @@ There should be a few entries named ajax.php. Click on one of them and go to the
 ![image](https://github.com/user-attachments/assets/77a6edbc-be71-4656-8f97-63cd868ab83b)
 It should display your user ID and session ID. Copy and paste these into the corresponding slots. Note that if you do not see it, try another one of the ajax.php entries.
 
+Once this is done, and you are done editing your own code, install tampermonkey, make a new project, and replace all of the content with the code in the aops_ultimate_poster file. Change the name of the tampermonkey file with "AoPS Ultimate Poster" without quotes, and save it by pressing CTRL-S (Command S on MacOS). After that, reload the AoPS page, and it should run!
+
 Note this is unethical and discouraged by AoPS, use this at your own risk.
 
 In development - An option to quote the previous post in the thread, get the post numbers of the posts it has sent, the ability to post in multiple threads (with all of them open).
