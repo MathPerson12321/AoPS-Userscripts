@@ -49,7 +49,7 @@
                 user_id: "0",
                 fetch_archived: "0",
                 fetch_announcements: "0",
-                categord_id: category, //Should be 1
+                category_id: category, //Should be 1
                 a: "fetch_topics",
                 aops_logged_in: true,
                 aops_user_id: AoPS.session.user_id,
@@ -63,7 +63,7 @@
                 user_id: "0",
                 fetch_archived: "0",
                 fetch_announcements: "1",
-                categord_id: category,
+                category_id: category,
                 a: "fetch_topics",
                 aops_logged_in: true,
                 aops_user_id: AoPS.session.user_id,
