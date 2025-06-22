@@ -27,4 +27,14 @@ In development - An option to quote the previous post in the thread, get the pos
 
 AI was used for the formatter function for ease of time.
 
+# AoPS Topic/PM Fetcher
+This will refresh all the new topics and replies in them over a certain time interval of your choosing (keep it not too low). This works for private messages as well.
+
+# Setup
+First fork the code into a code editor if possible. 
+URL - This is the thread you want to post in. If you want to fetch forums, have any topic from a forum open. For private messages, open any one of them. Note that the PM or topic open must be in the big screen and not side panel.
+
+Once this is done, and you are done editing your own code, install tampermonkey, make a new project, and replace all of the content with the code in the aops_topic_fetcher file. Change the name of the tampermonkey file with "AoPS Topic Fetcher" without quotes, and save it by pressing CTRL-S (Command S on MacOS). After that, reload the AoPS page, and it should run!
+
+Nothing wrong with using this one, but don't keep the interval too low or else it will lag AoPS and they may limit your account.
 
