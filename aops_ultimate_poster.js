@@ -33,31 +33,35 @@
   //Counters
   let counter = 0; //You can make counters to achieve a purpose, for example, this one tracks the amount of posts the bot does successfully.
   let errors = 0; //Amount of time the bot fails to post.
-  let random = Math.floor(Math.random()*10)+1; //Random number from 1 to 10.
   const maxposts = 100; //Bot will stop after sending 100 posts.
   //You can make your own functions and/or counters.
 
   let arrayofposts = []; //Array of all posts sent and their message content.
-  
-  //Timestamp
-  const timestamp = Date.now();
-  const dateobject = new Date(timestamp);
-  const date = dateobject.toDateString();
 
-  let message = "Testing something out related to aops's community server."; //You can change this before running it, bbcode tags should be covered in strings.
-    
-  //This may get long so feel free to break it apart as shown below.
-  message += "\n Random integer: " + random; //Adds the random integer to the message content.
-  message += "\n [hide=Post number "+(counter+1)+"]";
-  message += "Sent by the bot at " + date + "[/hide]"; //Adds a hide tag with the amount of posts the bot has done after sending, with the time sent in the hide tag.
-  //Note these are examples and you can manipulate these how you want, as long as they function.
+  function makeMessage(){
+    let message = "Testing something out related to aops's community server."; //You can change this before running it, bbcode tags should be covered in strings.
+    let random = Math.floor(Math.random()*10)+1; //Random number from 1 to 10.
+
+    //This may get long so feel free to break it apart as shown below.
+    message += "\n Random integer: " + random; //Adds the random integer to the message content.
+    message += "\n [hide=Post number "+(counter+1)+"]";
+    message += "Sent by the bot at " + date + "[/hide]"; //Adds a hide tag with the amount of posts the bot has done after sending, with the time sent in the hide tag.
+    //Note these are examples and you can manipulate these how you want, as long as they function. 
+
+    //Timestamp
+    const timestamp = Date.now();
+    const dateobject = new Date(timestamp);
+    const date = dateobject.toDateString();
+
+    return message;
+  }
     
   function sendData(){
       //Data
-      message = formatter(message);
+      message = formatter(message); //Do not change or remove this line at all, and do not change the function
       const data = new URLSearchParams({
         attachments: '[]',
-        post_text: message,
+        post_text: makeMessage(),
         notify_email: '0',
         topic_id: id,
         allow_latex_errors: '0',
